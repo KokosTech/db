@@ -282,7 +282,7 @@ GROUP BY
  */
 SELECT
     pt.PositionName,
-    COUNT(*) AS 'Goals'
+    COUNT(ms.StatCode) AS 'Goals'
 FROM
     Players AS p
     LEFT JOIN MatchStats AS ms ON p.Id = ms.PlayerId
@@ -291,6 +291,20 @@ FROM
 GROUP BY
     pt.PositionCode,
     pt.PositionName;
+
+
+SELECT
+    pt.PositionName,
+    COUNT(ms.StatCode) AS 'Goals'
+FROM
+    Positions AS pt
+    LEFT JOIN Players AS p ON pt.PositionCode = p.PositionCode
+    LEFT JOIN MatchStats AS ms ON p.Id = ms.PlayerId
+    AND ms.StatCode = 'G'
+GROUP BY
+    pt.PositionCode,
+    pt.PositionName;
+
 
 /* 14. Направете заявка за общия брой на картоните (жълти и червени) за всеки играч,
 който има такива, сортирана по брой картони в низходящ ред, със следните колони:
@@ -303,7 +317,7 @@ SELECT
     p.Name,
     p.Num,
     pt.PositionName,
-    COUNT(*) AS 'Cards'
+    COUNT(ms.StatCode) AS 'Cards'
 FROM
     MatchStats AS ms
     INNER JOIN Players AS p ON ms.PlayerId = p.Id
